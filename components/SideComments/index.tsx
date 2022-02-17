@@ -47,7 +47,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ user, text, post }) => {
   return (
     <div className={styles.commentItem}>
       <div className={styles.userInfo}>
-        <img src="https://leonardo.osnova.io/598fc957-a3f6-598c-b6f9-a033c3941d12/-/scale_crop/64x64/-/format/webp/" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8JhQ7n2CI9Fft6eTOJKdX6E2KkkZ2SXDHrQ&usqp=CAU"/>
         <a href="#">
           <b>{user.fullname}</b>
         </a>
@@ -67,6 +67,7 @@ export const SideComments = () => {
         Комментарии <ArrowRightIcon />
       </h3>
       {items.map((obj) => (
+        // eslint-disable-next-line react/jsx-key
         <CommentItem {...obj} />
       ))}
     </div>

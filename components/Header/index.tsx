@@ -1,5 +1,5 @@
-import React from 'react';
-import { Paper, Button, IconButton, Avatar } from '@material-ui/core';
+import React from "react";
+import { Paper, Button, IconButton, Avatar } from "@material-ui/core";
 import {
   SearchOutlined as SearchIcon,
   CreateOutlined as PenIcon,
@@ -7,9 +7,10 @@ import {
   Menu as MenuIcon,
   ExpandMoreOutlined as ArrowBottom,
   NotificationsNoneOutlined as NotificationIcon,
-} from '@material-ui/icons';
+} from "@material-ui/icons";
+import Link from 'next/link';
 
-import styles from './Header.module.scss';
+import styles from "./Header.module.scss";
 
 export const Header: React.FC = () => {
   return (
@@ -18,7 +19,15 @@ export const Header: React.FC = () => {
         <IconButton>
           <MenuIcon />
         </IconButton>
-        <img className={styles.logo} src="./static/img/logo1.png" alt="Logo" />
+        <Link href="/">
+          <a>
+            <img
+              className={styles.logo}
+              src="./static/img/logo1.png"
+              alt="Logo"
+            />
+          </a>
+        </Link>
 
         <div className={styles.searchBlock}>
           <SearchIcon />
@@ -36,12 +45,17 @@ export const Header: React.FC = () => {
         <IconButton>
           <NotificationIcon />
         </IconButton>
-        <Avatar
-          className={styles.avatar}
-          alt="Remy Sharp"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8JhQ7n2CI9Fft6eTOJKdX6E2KkkZ2SXDHrQ&usqp=CAU"
-        />
-        <ArrowBottom />
+        <Link href="/profile/1">
+          <a className="d-flex align-center">
+            <Avatar
+              className={styles.avatar}
+              alt="Remy Sharp"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8JhQ7n2CI9Fft6eTOJKdX6E2KkkZ2SXDHrQ&usqp=CAU"
+            />
+            <ArrowBottom />
+          </a>
+        </Link>
+
       </div>
     </Paper>
   );
