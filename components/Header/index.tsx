@@ -8,7 +8,7 @@ import {
   ExpandMoreOutlined as ArrowBottom,
   NotificationsNoneOutlined as NotificationIcon,
 } from "@material-ui/icons";
-import Link from 'next/link';
+import Link from "next/link";
 
 import styles from "./Header.module.scss";
 
@@ -34,9 +34,11 @@ export const Header: React.FC = () => {
           <input placeholder="Поиск" />
         </div>
 
-        <Button variant="contained" className={styles.penButton}>
-          Новая запись
-        </Button>
+        <Link href ="/write">
+          <Button variant="contained" className={styles.penButton}>
+            Новая запись
+          </Button>
+        </Link>
       </div>
       <div className={styles.content}>
         <IconButton>
@@ -55,7 +57,6 @@ export const Header: React.FC = () => {
             <ArrowBottom />
           </a>
         </Link>
-
       </div>
     </Paper>
   );
