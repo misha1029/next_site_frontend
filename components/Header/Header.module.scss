@@ -1,90 +1,10 @@
-/* .root{
-  position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #FFF4E2 !important;
-    width: 100%;
-    padding: 0 30px  0 10px;
-    height: 60px;
-    margin-bottom: 10px;
-    z-index: 1;
-
-}
-.content{
-    display: flex;
-    align-items: center;
-    
-}
-
-.penButton {
-  min-width: 40px !important;
-  text-transform: inherit !important;
-  font-size: 16px !important;
-  letter-spacing: 0 !important;
-}
-
-.logo {
-    width: 45px;
-    height: 45px;
-    margin-right: 20px;
-    margin-left: 8px;
-}
-
-
-.searchBlock {
-    position: relative;
-    margin-right: 15px;
-    width: 310px;
-  
-    svg {
-      position: absolute;
-      top: 8px;
-      left: 10px;
-      opacity: 0.3;
-    }
-  
-    input {
-      width: 100%;
-      height: 40px;
-      border: 0;
-      border-radius: 10px;
-      background-color: rgba(0, 0, 0, 0.05);
-      font-size: 16px;
-      padding-left: 40px;
-      transition: all 0.1s ease-in-out;
-      border: 1px solid transparent;
-  
-      &:hover,
-      &:focus {
-        background-color: #fff;
-        border-color: darken(#fff4e2, 15%);
-        box-shadow: 0 0 0 3px rgb(229 160 64 / 12%);
-      }
-    }
-  }
-
-
-.avatar{
-    margin-left: 20px;
-    border-radius: 20% !important;
-    margin-right: 6px;
-}
-  
-  
-.penButton {
-  min-width: 40px !important;
-  text-transform: inherit !important;
-  font-size: 16px !important;
-  letter-spacing: 0 !important;
-} */
 .root {
   position: fixed;
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  background-color: #fff4e2 !important;
+  background-color: #89d0eb !important;
   padding: 0 35px 0 10px;
   height: 60px;
   margin-bottom: 14px;
@@ -148,4 +68,22 @@
     }
   }
 }
+
+.loginButton {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-left: 15px;
+
+  svg {
+    margin-right: 10px;
+  }
+
+  &:hover {
+    color: #4683d9;
+  }
+}
+
 

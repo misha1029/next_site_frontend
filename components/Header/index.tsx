@@ -7,12 +7,23 @@ import {
   Menu as MenuIcon,
   ExpandMoreOutlined as ArrowBottom,
   NotificationsNoneOutlined as NotificationIcon,
+  AccountCircleOutlined as UserIcon,
 } from "@material-ui/icons";
 import Link from "next/link";
-
+import { AuthDialog } from "../AuthDialog";
 import styles from "./Header.module.scss";
 
 export const Header: React.FC = () => {
+  const [authVisible, setAuthVisible] = React.useState(false);
+
+  const openAuthDialog = () => {
+    setAuthVisible(true);
+  };
+
+  const closeAuthDialog = () => {
+    setAuthVisible(false);
+  };
+
   return (
     <Paper classes={{ root: styles.root }} elevation={0}>
       <div className={styles.content}>
@@ -34,7 +45,7 @@ export const Header: React.FC = () => {
           <input placeholder="Поиск" />
         </div>
 
-        <Link href ="/write">
+        <Link href="/write">
           <Button variant="contained" className={styles.penButton}>
             Новая запись
           </Button>
@@ -47,7 +58,7 @@ export const Header: React.FC = () => {
         <IconButton>
           <NotificationIcon />
         </IconButton>
-        <Link href="/profile/1">
+        {/*         <Link href="/profile/1">
           <a className="d-flex align-center">
             <Avatar
               className={styles.avatar}
@@ -56,8 +67,13 @@ export const Header: React.FC = () => {
             />
             <ArrowBottom />
           </a>
-        </Link>
+        </Link> */}
+        <div className={styles.loginButton} onClick={openAuthDialog}>
+          <UserIcon />
+          Войти
+        </div>
       </div>
+      <AuthDialog onClose={closeAuthDialog} visible={authVisible} />
     </Paper>
   );
 };

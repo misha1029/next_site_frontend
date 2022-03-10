@@ -6,15 +6,6 @@ import clsx from "clsx";
 import styles from "./SideComments.module.scss";
 
 
-interface CommentItemProps {
-  user: {
-    fullname: string;
-  };
-  text: string;
-  post: {
-    title: string;
-  };
-}
 
 export const SideComments = () => {
   const [visible, setVisible] = React.useState(true);
