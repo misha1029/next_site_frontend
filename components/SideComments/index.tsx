@@ -4,11 +4,13 @@ import data from "../../data";
 import { CommentItem } from "./CommentItem";
 import clsx from "clsx";
 import styles from "./SideComments.module.scss";
+import { useComments } from "../../hooks/useComments";
 
 
 
 export const SideComments = () => {
   const [visible, setVisible] = React.useState(true);
+  const { comments } = useComments();
 
   const toggleVisible = () => {
     setVisible(!visible);
@@ -20,8 +22,8 @@ export const SideComments = () => {
         Комментарии <ArrowRightIcon />
       </h3>
       {visible &&
-        data.comments.popular.map((obj) => (
-          <CommentItem {...obj} />
+        comments.map((obj) => (
+          <CommentItem key={obj.id} {...obj} />
         ))}
     </div>
   );

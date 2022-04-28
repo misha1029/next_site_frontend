@@ -55,7 +55,7 @@ export const Comment: React.FC<CommentPostProps> = ({
   return (
     <div className={styles.comment}>
       <div className={styles.userInfo}>
-        <Avatar>{user.fullName[0]}</Avatar>
+        <Avatar style={{ marginRight: 10 }}>{user.fullName[0]}</Avatar>
         <b>{user.fullName}</b>
         <span>{createdAt}</span>
       </div>

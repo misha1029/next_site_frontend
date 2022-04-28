@@ -8,6 +8,7 @@ import { CommentItem } from "../../utils/api/types";
 
 import { useAppSelector } from "../../redux/hooks";
 import { selectUserData } from "../../redux/slices/user";
+import { useComments } from "../../hooks/useComments";
 
 interface PostComments {
   postId: number;
@@ -16,18 +17,7 @@ interface PostComments {
 export const PostComments: React.FC<PostComments> = ({ postId }) => {
   const userData = useAppSelector(selectUserData);
   const [activeTab, setActiveTab] = React.useState(0);
-  const [comments, setComments] = React.useState<CommentItem[]>([]);
-
-  React.useEffect(() => {
-    (async () => {
-      try {
-        const arr = await Api().comment.getAll();
-        setComments(arr);
-      } catch (err) {
-        console.warn("", err);
-      }
-    })();
-  }, []);
+  const { comments, setComments } = useComments(postId);
 
   const onAddComment = (obj: CommentItem) => {
     setComments((prev) => [...prev, obj]);
@@ -36,7 +26,6 @@ export const PostComments: React.FC<PostComments> = ({ postId }) => {
   const onRemoveComment = (id: number) => {
     setComments((prev) => prev.filter((obj) => obj.id !== id));
   };
-
 
   return (
     <Paper elevation={0} className="mt-40 p-30">
@@ -67,7 +56,7 @@ export const PostComments: React.FC<PostComments> = ({ postId }) => {
             user={obj.user}
             text={obj.text}
             createdAt={obj.createdAt}
-            onRemove = {onRemoveComment}
+            onRemove={onRemoveComment}
           />
         ))}
       </div>
