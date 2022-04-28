@@ -2,18 +2,37 @@ import React from "react";
 import { Button, Input } from "@material-ui/core";
 import styles from "./WriteForm.module.scss";
 import dynamic from "next/dynamic";
+import { Api } from "../../utils/api";
+import { PostItem } from "../../utils/api/types";
 
 const Editor = dynamic(() => import("../Editor").then((m) => m.Editor), {
   ssr: false,
 });
 
 interface WriteFormProps {
-  data?: any;
+  data?: PostItem;
 }
 
-export const WriteForm: React.FC<WriteFormProps> = () => {
-  const [title, setTitle] = React.useState("");
-  const [blocks, setBlocks] = React.useState([]);
+export const WriteForm: React.FC<WriteFormProps> = ({data}) => {
+  const [isLoading, setLoading] = React.useState(false);
+  const [title, setTitle] = React.useState(data?.title || '');
+  const [blocks, setBlocks] = React.useState(data?.body || []);
+
+  const onAddPost = async () => {
+    try {
+      setLoading(true);
+      const post = await Api().post.create({
+        title,
+        body: blocks,
+      });
+      console.log(post);
+    } catch (err) {
+      console.warn("Create post", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <Input
@@ -23,9 +42,14 @@ export const WriteForm: React.FC<WriteFormProps> = () => {
         placeholder="Заголовок"
       />
       <div className={styles.editor}>
-        <Editor onChange = {arr => setBlocks(arr)}/>
+        <Editor initialBlocks = {data?.body} onChange={(arr) => setBlocks(arr)} />
       </div>
-      <Button variant="contained" color="primary">
+      <Button
+        disabled={isLoading || !blocks.length || !title}
+        onClick={onAddPost}
+        variant="contained"
+        color="primary"
+      >
         Опубликовать
       </Button>
     </div>

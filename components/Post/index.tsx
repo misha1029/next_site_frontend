@@ -6,25 +6,34 @@ import { PostActions } from "../PostActions";
 
 import styles from "./Post.module.scss";
 
-export const Post: React.FC = () => {
+
+interface PostProps {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl?: string;
+}
+
+export const Post: React.FC<PostProps> = ({id, title , description, imageUrl}) => {
   return (
     <Paper elevation={0} classes={{ root: styles.paper }}>
       <Typography variant="h5" className={styles.title}>
-        <Link href="/news/test-123">
+        <Link href={`/news/${id}`}>
           <a>
-            Глава Electronic Arts сообщил об отсутствии текущих планов на NFT
+            {title}
           </a>
         </Link>
       </Typography>
       <Typography className={styles.info}>
-        Пока истерия с NFT идет полным ходом, игровая индустрия не может
-        разобраться, куда это прикрутить и что с этим делать.
+        {description}
       </Typography>
-      <Image
+      {imageUrl && <img
         src="https://habrastorage.org/getpro/habr/upload_files/3da/0cd/fbc/3da0cdfbcbc572ed62e827d97c745fe1.jpeg"
         height={400}
         width={600}
+        alt={title}
       />
+      }
       <PostActions />
     </Paper>
   );
