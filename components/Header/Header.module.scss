@@ -11,6 +11,13 @@
   z-index: 1;
 }
 
+.searchBlockPopup {
+  position: absolute !important;
+  top: 40px;
+  width: 310px;
+}
+
+
 .content{
   display: flex;
   align-items: center;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Button, IconButton, Avatar } from "@material-ui/core";
+import { Paper, Button, IconButton, Avatar, List, ListItem } from "@material-ui/core";
 import {
   SearchOutlined as SearchIcon,
   CreateOutlined as PenIcon,
@@ -14,10 +14,14 @@ import { AuthDialog } from "../AuthDialog";
 import styles from "./Header.module.scss";
 import { useAppSelector } from "../../redux/hooks";
 import { selectUserData } from "../../redux/slices/user";
+import { PostItem } from "../../utils/api/types";
 
 export const Header: React.FC = () => {
   const userData = useAppSelector(selectUserData);
   const [authVisible, setAuthVisible] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState('');
+  const [posts, setPosts] = React.useState<PostItem[]>([]);
+
 
   const openAuthDialog = () => {
     setAuthVisible(true);
@@ -52,6 +56,20 @@ export const Header: React.FC = () => {
         <div className={styles.searchBlock}>
           <SearchIcon />
           <input placeholder="Поиск" />
+          {posts.length > 0 && (
+            <Paper className={styles.searchBlockPopup}>
+              <List>
+                {posts.map((obj) => (
+                  <Link key={obj.id} href={`/news/${obj.id}`}>
+                    <a>
+                      <ListItem button>{obj.title}</ListItem>
+                    </a>
+                  </Link>
+                ))}
+              </List>
+            </Paper>
+          )}
+
         </div>
 
         <Link href="/write">
