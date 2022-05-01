@@ -7,8 +7,20 @@ import {
 
 import { Post } from '../../components/Post';
 import { MainLayout } from '../../layouts/MainLayout';
+import { GetServerSideProps, NextPage } from 'next';
+import { Api } from '../../utils/api';
+import { ResponseUser } from '../../utils/api/types';
+import moment from 'moment'
 
-export default function Profile() {
+
+
+interface ProfileProps {
+  user: ResponseUser;
+}
+
+const Profile: NextPage<ProfileProps> = ({ user }) => {
+  console.log(user)
+
   return (
     <MainLayout contentFullWidth hideComments>
       <Paper className="pl-20 pr-20 pt-20 mb-30" elevation={0}>
@@ -19,7 +31,7 @@ export default function Profile() {
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8JhQ7n2CI9Fft6eTOJKdX6E2KkkZ2SXDHrQ&usqp=CAU"
             />
             <Typography style={{ fontWeight: 'bold' }} className="mt-10" variant="h4">
-              Amon Bower
+              {user.fullName}
             </Typography>
           </div>
           <div>
@@ -42,7 +54,7 @@ export default function Profile() {
           </Typography>
           <Typography>2 подписчика</Typography>
         </div>
-        <Typography>На проекте с 15 сен 2016</Typography>
+        <Typography>{user.createAt}</Typography>
 
         <Tabs className="mt-20" value={0} indicatorColor="primary" textColor="primary">
           <Tab label="Статьи" />
@@ -52,7 +64,7 @@ export default function Profile() {
       </Paper>
       <div className="d-flex align-start">
         <div className="mr-20 flex">
-          <Post />
+          {/* <Post /> */}
         </div>
         <Paper style={{ width: 300 }} className="p-20 mb-20" elevation={0}>
           <b>Подписчики</b>
@@ -70,4 +82,30 @@ export default function Profile() {
       </div>
     </MainLayout>
   );
-}
+};
+
+export default Profile;
+
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  try {
+    console.log(ctx)
+    const id = ctx.params.id;
+    const user = await Api(ctx).user.getOne(+id);
+
+    return {
+      props: {
+        user,
+      },
+    };
+  } catch (err) {
+    console.log('user post page', err);
+    return {
+      props: {},
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+};

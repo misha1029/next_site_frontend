@@ -20,6 +20,7 @@
     "clsx": "^1.1.1",
     "i": "^0.3.7",
     "macro-css": "^1.0.5",
+    "moment": "^2.29.3",
     "next": "12.0.9",
     "next-redux-wrapper": "^7.0.5",
     "nookies": "^2.5.2",

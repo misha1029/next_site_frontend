@@ -1,5 +1,13 @@
 import React from "react";
-import { Paper, Button, IconButton, Avatar, List, ListItem } from "@material-ui/core";
+import {
+  Paper,
+  Button,
+  IconButton,
+  Avatar,
+  List,
+  ListItem,
+  ClickAwayListener,
+} from "@material-ui/core";
 import {
   SearchOutlined as SearchIcon,
   CreateOutlined as PenIcon,
@@ -15,13 +23,23 @@ import styles from "./Header.module.scss";
 import { useAppSelector } from "../../redux/hooks";
 import { selectUserData } from "../../redux/slices/user";
 import { PostItem } from "../../utils/api/types";
+import { Api } from "../../utils/api";
+
+
+
+
+import { destroyCookie } from "nookies";
+
+
+
+
 
 export const Header: React.FC = () => {
   const userData = useAppSelector(selectUserData);
   const [authVisible, setAuthVisible] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState('');
+  const [searchValue, setSearchValue] = React.useState("");
   const [posts, setPosts] = React.useState<PostItem[]>([]);
-
+  const [open, setOpen] = React.useState(false);
 
   const openAuthDialog = () => {
     setAuthVisible(true);
@@ -32,10 +50,47 @@ export const Header: React.FC = () => {
   };
 
   React.useEffect(() => {
-    if (authVisible && userData){
+    if (authVisible && userData) {
       setAuthVisible(false);
     }
-  },[authVisible, userData]);
+  }, [authVisible, userData]);
+
+  const handleChangeInput = async (e) => {
+    setSearchValue(e.target.value);
+    try {
+      const { items } = await Api().post.search({ title: e.target.value });
+      setPosts(items);
+    } catch (e) {
+      console.warn(e);
+    }
+  };
+
+  const handleClick = () => {
+    setOpen((prev) => !prev);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
+
+  const refresh = function refresh() {    
+    setTimeout(function () {
+        location.reload('http://localhost:3000')
+    }, 100);
+}
+  const logout = async ({ token }) => {
+    try {
+      destroyCookie(null, 'rtoken', {
+        path: '/',
+      })
+      refresh();
+    } catch (err) {
+      console.warn("Register error", err);
+      if (err.response) { 
+        console.log(err)
+      }
+    }
+  };
 
   return (
     <Paper classes={{ root: styles.root }} elevation={0}>
@@ -52,25 +107,33 @@ export const Header: React.FC = () => {
             />
           </a>
         </Link>
-
-        <div className={styles.searchBlock}>
-          <SearchIcon />
-          <input placeholder="Поиск" />
-          {posts.length > 0 && (
-            <Paper className={styles.searchBlockPopup}>
-              <List>
-                {posts.map((obj) => (
-                  <Link key={obj.id} href={`/news/${obj.id}`}>
-                    <a>
-                      <ListItem button>{obj.title}</ListItem>
-                    </a>
-                  </Link>
-                ))}
-              </List>
-            </Paper>
-          )}
-
-        </div>
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <div onClick={handleClick} className={styles.searchBlock}>
+            <SearchIcon />
+            <input
+              value={searchValue}
+              onChange={handleChangeInput}
+              placeholder="Поиск"
+            />
+            {open ? (
+              <Paper className={styles.searchBlockPopup}>
+                {posts.length > 0 && (
+                  <List>
+                    {posts.map((obj) => (
+                      <Link key={obj.id} href={`/news/${obj.id}`}>
+                        <a>
+                          <ClickAwayListener onClickAway={handleClickAway}>
+                            <ListItem button>{obj.title}</ListItem>
+                          </ClickAwayListener>
+                        </a>
+                      </Link>
+                    ))}
+                  </List>
+                )}
+              </Paper>
+            ) : null}
+          </div>
+        </ClickAwayListener>
 
         <Link href="/write">
           <Button variant="contained" className={styles.penButton}>
@@ -85,6 +148,11 @@ export const Header: React.FC = () => {
         <IconButton>
           <NotificationIcon />
         </IconButton>
+            <div className="d-flex align-center justify-between">
+              <Button onClick={logout} type="submit" color="primary" variant="contained">
+                Выйти
+              </Button>
+            </div>
         {userData ? (
           <Link href="/profile/1">
             <a className="d-flex align-center">

@@ -21,7 +21,7 @@ const FullPostPage: NextPage<FullPostPageProps> = ({ post }) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
-    const id = ctx.params.id;
+    const id = ctx.res
     const post = await Api(ctx).post.getOne(+id);
 
     return {
